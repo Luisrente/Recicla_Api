@@ -340,11 +340,12 @@ exports.deleteMotivo = function (req, res) {
     if (err) throw err
     else {
       res.json({ status: 'eliminado' })
+      console.log(res.json);
     }
   })
 }
 
-/* ************************* permisos **************************************/
+/* ************************* permisos **********************************/
 
 exports.crearPermiso = function (req, res) {
   const { idAdministrativo, idEmpleado, fpermiso, fsalida, fentrada, observaciones, codMotivo } = req.body;
