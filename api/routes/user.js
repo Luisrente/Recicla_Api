@@ -1,79 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const authVerify=require('../middleware/auth')
-
 
 //Controllers
-const userController=require('../controllers/user')
-const residuoController=require('../controllers/residuo')
-const estadisticas=require('../controllers/estadisticas');
-const solicitud=require('../controllers/solicitud')
+const proceso= require('../controllers/procesos');
 
-//Usuario
+//auth
+router.post('/login',proceso.login);
+router.post('/me',proceso.getUser);
 
-router.get('/',userController.listausuario);
-router.post('/singin',userController.create);
-router.post('/test',verifyToken,userController.test);
+//empleados
+router.get('/empleados',proceso.listarEmpleados);
+router.get('/empleados/:id', proceso.obtenerEmpleado);
+router.delete('/empleados/:id', proceso.deleteEmpleado);
+router.post('/empleados',proceso.crearEmpleado);
+router.put('/empleados/:id',proceso.editarEmpleado);
 
+//admins
+router.get('/admins', proceso.listarAdmins);
+router.post('/admins', proceso.crearAdmin);
+router.delete('/admins/:id', proceso.deleteAdmin);
 
-//Residuo
-router.get('/residuo',residuoController.module.listarResiduo);
-router.get('/residuo/:id',residuoController.module.ObtenerResiduo);
-router.post('/residuo/',residuoController.module.crearResiduo);
-router.delete('/residuo/:id',residuoController.module.eliminarResiduo);
-router.put('/residuo/:id',residuoController.module.actualizarResiduo);
+//permisos
+/* router.post('/permisosIds', proceso.getIds); */
+router.post('/permisos', proceso.crearPermiso);
+router.get('/permisos/:id', proceso.obtenerPermisos);
+router.post('/permisosIds', proceso.getIds);
 
-
-//Estadistica
-router.get('/estadistica',estadisticas.models.Pendientes);
-router.get('/estadistica/cant',estadisticas.models.Cantidad);
-router.get('/estadistica/reciclador',estadisticas.models.Consultareciclador);
-router.get('/estadistica/Categoria',estadisticas.models.Categoria);
-router.get('/estadistica/Cliente',estadisticas.models.Cliente);
-router.get('/pedido',estadisticas.models.pedidos);
-router.get('/puntos',estadisticas.models.puntoss);
-
-
-
-//solicitud
-router.get('/solicitud',solicitud.module.listarsolicitud);
-router.get('/solicitud/:id',solicitud.module.ObtenersolicitudUser);
-router.post('/solicitud',solicitud.module.crearSolicitud);
-
-// Detalle 
-router.post('/Detalle',solicitud.module.crearDetalle);
-
-
-//Dirrecion 
-router.post('/dirrecion',solicitud.module.creardireccion);
-
-
-//reciclador 
-router.get('/reciclador',solicitud.module.Reciclador);
-router.post('/aceptar',solicitud.module.Aceptar);
-
-//email
-router.get('/email',estadisticas.models.email);
-
-
-
-
-
-
-function verifyToken(req,res, next){
-  if(!req.headers.authorization) return res.status(401).json('No autorizado');
-
-  const token = req.headers.authorization.substr(7);
-  if(token!==''){
-    const content = jwt.verify(token,'stil');
-    req.data = content;
-    next();
-  }else{
-    res.status(401).json('Token vacio');
-  }
-
-}
-
+//motivos
+router.get('/motivos', proceso.listarMotivos);
+router.post('/motivos', proceso.crearMotivo);
+router.get('/motivos/:id', proceso.obtenerMotivo);
+router.put('/motivos/:id', proceso.editarMotivo);
+router.delete('/motivos/:id', proceso.deleteMotivo);
 
 module.exports = router;
