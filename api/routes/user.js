@@ -21,7 +21,6 @@ router.post('/admins', proceso.crearAdmin);
 router.delete('/admins/:id', proceso.deleteAdmin);
 
 //permisos
-/* router.post('/permisosIds', proceso.getIds); */
 router.post('/permisos', proceso.crearPermiso);
 router.get('/permisos/:id', proceso.obtenerPermisos);
 router.post('/permisosIds', proceso.getIds);
